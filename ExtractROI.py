@@ -72,7 +72,8 @@ def detect_red(img):
 def detect_blue(img):
     img_hsv = cv2.cvtColor(crop_img, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(img_hsv, (90,127,127), (130,255,255))
-    output = cv2.bitwise_and(crop_img,crop_img,mask=mask)
+    mask2 = cv2.inRange(img_hsv, (86,31,4), (220,88,50))
+    output = cv2.bitwise_and(crop_img,crop_img,mask=mask+mask2)
     return output
 
 def get_crop_image(img,x,y,w,h,wdth,ht):
@@ -97,7 +98,7 @@ def get_crop_image(img,x,y,w,h,wdth,ht):
 
 
 
-img,path = read_image(r"\slippery_when_wet","jpg")
+img,path = read_image(r"\slippery_road_rain","jpg")
 img = enhance(img)
 img = adapatative_histogram_equalisation(img)
 img = denoise(img)
