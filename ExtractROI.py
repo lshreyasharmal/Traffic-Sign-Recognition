@@ -54,12 +54,12 @@ def denoise(img):
     return cv2.fastNlMeansDenoisingColored(img,None,10,10,7,21)
 
 def read_image(title,type):
-    directory = r"C:\Users\MyPC\Desktop\Images\CroppedImages"
+    directory = r"C:\Users\MyPC\Desktop\IA project Final\Images\CroppedImages"
     path = directory+title
     import os
     if not os.path.exists(path):
         os.makedirs(path)
-    img = cv2.imread(r'C:\Users\MyPC\Desktop\Images'+title+'.'+type)
+    img = cv2.imread(r'C:\Users\MyPC\Desktop\IA project Final\Images'+title+'.'+type)
     return img,path
 
 def detect_red(img):
@@ -98,7 +98,7 @@ def get_crop_image(img,x,y,w,h,wdth,ht):
 
 
 
-img,path = read_image(r"\slippery_road_rain","jpg")
+img,path = read_image(r"\icy_road","jpg")
 img = enhance(img)
 img = adapatative_histogram_equalisation(img)
 img = denoise(img)
@@ -111,6 +111,7 @@ image, contours, h = cv2.findContours(thresh,1,2)
 number=1
 for i, cnt in enumerate (contours):
     approx = cv2.approxPolyDP(cnt,0.01*cv2.arcLength(cnt,True),True)
+    
     x, y, w, h = cv2.boundingRect(cnt)
     wdth, ht, g = img.shape
 
@@ -130,9 +131,11 @@ for i, cnt in enumerate (contours):
     
 
     if(not np.all(output_red==0) and color_ratio_red>0.1 and check_aspect_ratio(aspect_ratio) and check_dimension_within_range(img_height,img_width,crop_img_height,crop_img_width)):
-       if len(approx) > 10 or len(approx)==3 or len(approx)==8:
-            cv2.imwrite(path+r"\Crop_img_"+str(number)+".png",crop_img)
-            number+=1
+       if len(approx)==3 or len(approx)==8:
+           print(approx)
+           break
+           cv2.imwrite(path+r"\Crop_img_"+str(number)+".png",crop_img)
+           number+=1
             
     output_blue = detect_blue(crop_img)
     crop_img_num_blue_pixels = np.count_nonzero(output_blue)
