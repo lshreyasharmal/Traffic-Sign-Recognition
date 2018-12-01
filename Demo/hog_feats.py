@@ -67,7 +67,7 @@ def read_hog_file(filename):
 	return np.loadtxt(filename)
 
 def calculate_histogram(array,weights):
-	bins_range = (0, 180)
+	bins_range = (0, 255)
 	bins = bin_num
 	hist,_ = np.histogram(array,bins=bins,range=bins_range,weights=weights)
 
@@ -127,11 +127,9 @@ def create_hog_features(grad_array,mag_array):
 		i += 1
 		h += 1
 
-	#returns a vextor array list of 288 elements
 	return block_list
 
 #image_array must be an array
-#returns a 288 features vector from image array
 def apply_hog(image_array):
 	gradient,magnitude = create_grad_array(image_array)
 	hog_features = create_hog_features(gradient,magnitude)
